@@ -43,6 +43,7 @@ function get_shortscore_endpoint_data() {
 
     $game_id = $shortscore->comment_post_ID;
     $shortscore_average = get_post_meta($game_id, 'score_value', true);
+    $shortscore_count = get_post_meta($game_id, 'score_count', true);
     $game_url = get_post_permalink($game_id);
 
 
@@ -56,7 +57,8 @@ function get_shortscore_endpoint_data() {
         "game" => array (
             "id" => $game_id,
             "url" => $game_url,
-            "average-shortscore" => $shortscore_average
+            "shortscore-average" => $shortscore_average,
+            "shortscore-count" => $shortscore_count
         )
 
     );
