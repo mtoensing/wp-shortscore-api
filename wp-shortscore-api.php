@@ -34,12 +34,31 @@ function get_shortscore_endpoint_data() {
         return;
     }
 
+    $shortscore_id = $get_shortscore;
 
-    $shortscore = get_comment( $get_shortscore );
-    $game_id = $shortscore->comment_post_ID ;
+    $user_shortscore = get_comment_meta($shortscore_id, 'score', true);
+    $user_shortscore_url = get_comment_link($shortscore_id);
+
+    $shortscore = get_comment( $shortscore_id );
+
+    $game_id = $shortscore->comment_post_ID;
+    $shortscore_average = get_post_meta($game_id, 'score_value', true);
+    $game_url = get_post_permalink($game_id);
+
 
     $shortscore_data = array(
-        'game' => $game_id
+
+        "user-shortscore" => array (
+            "id" => $shortscore_id,
+            "shortscore" => $user_shortscore,
+            "url" => $user_shortscore_url
+        ),
+        "game" => array (
+            "id" => $game_id,
+            "url" => $game_url,
+            "average-shortscore" => $shortscore_average
+        )
+
     );
 
     wp_send_json( $shortscore_data );
