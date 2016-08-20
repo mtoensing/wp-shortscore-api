@@ -28,7 +28,7 @@ function get_shortscore_endpoint_data() {
 
     global $wp_query;
 
-    $get_shortscore = $wp_query->get( 'get_shortscore' );
+    $get_shortscore = sanitize_text_field($wp_query->get( 'get_shortscore' ));
 
     if ( ! $get_shortscore ) {
         return;
