@@ -39,6 +39,7 @@ function get_shortscore_endpoint_data()
         $summary = get_comment_text($shortscore_id);
         $shortscore = get_comment($shortscore_id);
         $shortscore_author = get_comment_author($shortscore_id);
+        $shortscore_date = get_comment_date( 'c', $shortscore_id);
 
         $game_id = $shortscore->comment_post_ID;
         $shortscore_average = get_post_meta($game_id, 'score_value', true);
@@ -53,6 +54,7 @@ function get_shortscore_endpoint_data()
                 "author" => $shortscore_author,
                 "userscore" => $user_shortscore,
                 "summary" => $summary,
+                "date" => $shortscore_date,
                 "url" => $user_shortscore_url
             ),
             "game" => array(
