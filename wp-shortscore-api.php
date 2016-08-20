@@ -13,57 +13,59 @@
 /**
  * Rewrite an endpoint to get shortscore data
  */
-function get_shortscore_endpoint() {
+function get_shortscore_endpoint()
+{
 
-    add_rewrite_tag( '%get_shortscore%', '([^&]+)' );
-    add_rewrite_rule( 'gifs/([^&]+)/?', 'index.php?get_shortscore=$matches[1]', 'top' );
+    add_rewrite_tag('%get_shortscore%', '([^&]+)');
+    add_rewrite_rule('gifs/([^&]+)/?', 'index.php?get_shortscore=$matches[1]', 'top');
 
 }
-add_action( 'init', 'get_shortscore_endpoint' );
+
+add_action('init', 'get_shortscore_endpoint');
 
 /**
  * Pass through the data to the endpoint.
  */
-function get_shortscore_endpoint_data() {
+function get_shortscore_endpoint_data()
+{
 
     global $wp_query;
 
-    $get_shortscore = sanitize_text_field($wp_query->get( 'get_shortscore' ));
+    $shortscore_id = sanitize_text_field($wp_query->get('get_shortscore'));
 
-    if ( ! $get_shortscore ) {
+    if (!$shortscore_id) {
         return;
     }
 
-    $shortscore_id = $get_shortscore;
+    if ($user_shortscore = get_comment_meta($shortscore_id, 'score', true)) {
+        
+        $user_shortscore_url = get_comment_link($shortscore_id);
+        $shortscore = get_comment($shortscore_id);
 
-    $user_shortscore = get_comment_meta($shortscore_id, 'score', true);
-    $user_shortscore_url = get_comment_link($shortscore_id);
+        $game_id = $shortscore->comment_post_ID;
+        $shortscore_average = get_post_meta($game_id, 'score_value', true);
+        $shortscore_count = get_post_meta($game_id, 'score_count', true);
+        $game_url = get_post_permalink($game_id);
 
-    $shortscore = get_comment( $shortscore_id );
+        $shortscore_data = array(
 
-    $game_id = $shortscore->comment_post_ID;
-    $shortscore_average = get_post_meta($game_id, 'score_value', true);
-    $shortscore_count = get_post_meta($game_id, 'score_count', true);
-    $game_url = get_post_permalink($game_id);
+            "shortscore" => array(
+                "id" => $shortscore_id,
+                "userscore" => $user_shortscore,
+                "url" => $user_shortscore_url
+            ),
+            "game" => array(
+                "id" => $game_id,
+                "url" => $game_url,
+                "shortscore" => $shortscore_average,
+                "count" => $shortscore_count
+            )
 
+        );
+    }
 
-    $shortscore_data = array(
-
-        "shortscore" => array (
-            "id" => $shortscore_id,
-            "userscore" => $user_shortscore,
-            "url" => $user_shortscore_url
-        ),
-        "game" => array (
-            "id" => $game_id,
-            "url" => $game_url,
-            "shortscore" => $shortscore_average,
-            "count" => $shortscore_count
-        )
-
-    );
-
-    wp_send_json( $shortscore_data );
+    wp_send_json($shortscore_data);
 
 }
-add_action( 'template_redirect', 'get_shortscore_endpoint_data' );
+
+add_action('template_redirect', 'get_shortscore_endpoint_data');
