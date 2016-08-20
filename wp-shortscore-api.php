@@ -5,20 +5,17 @@
  * Description: Retreive SHORTSCORE data by providing a shortscore ID: `?get_shortscore=1`
  * Author: MarcDK
  * Author URI: http://marc.tv
- * Version: 0.0.1
+ * Version: 1.0
  * License: GPLv2
  */
 
-
 /**
- * Rewrite an endpoint to get shortscore data
+ * Rewrite endpoint to get shortscore data
  */
 function get_shortscore_endpoint()
 {
-
     add_rewrite_tag('%get_shortscore%', '([^&]+)');
     add_rewrite_rule('gifs/([^&]+)/?', 'index.php?get_shortscore=$matches[1]', 'top');
-
 }
 
 add_action('init', 'get_shortscore_endpoint');
@@ -28,7 +25,6 @@ add_action('init', 'get_shortscore_endpoint');
  */
 function get_shortscore_endpoint_data()
 {
-
     global $wp_query;
 
     $shortscore_id = sanitize_text_field($wp_query->get('get_shortscore'));
@@ -47,6 +43,7 @@ function get_shortscore_endpoint_data()
         $game_id = $shortscore->comment_post_ID;
         $shortscore_average = get_post_meta($game_id, 'score_value', true);
         $shortscore_count = get_post_meta($game_id, 'score_count', true);
+        $game_title = get_the_title($game_id);
         $game_url = get_post_permalink($game_id);
 
         $shortscore_data = array(
@@ -60,6 +57,7 @@ function get_shortscore_endpoint_data()
             ),
             "game" => array(
                 "id" => $game_id,
+                "title" => $game_title,
                 "url" => $game_url,
                 "shortscore" => $shortscore_average,
                 "count" => $shortscore_count
