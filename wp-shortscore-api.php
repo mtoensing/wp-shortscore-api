@@ -49,7 +49,7 @@ function get_shortscore_endpoint_data() {
 
     $shortscore_data = array(
 
-        "user-shortscore" => array (
+        "shortscore" => array (
             "id" => $shortscore_id,
             "shortscore" => $user_shortscore,
             "url" => $user_shortscore_url
@@ -57,8 +57,8 @@ function get_shortscore_endpoint_data() {
         "game" => array (
             "id" => $game_id,
             "url" => $game_url,
-            "shortscore-average" => $shortscore_average,
-            "shortscore-count" => $shortscore_count
+            "shortscore" => $shortscore_average,
+            "votes" => $shortscore_count
         )
 
     );
