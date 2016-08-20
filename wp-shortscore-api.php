@@ -40,7 +40,7 @@ function get_shortscore_endpoint_data()
     if ($user_shortscore = get_comment_meta($shortscore_id, 'score', true)) {
 
         $user_shortscore_url = get_comment_link($shortscore_id);
-        $content = get_comment_text($shortscore_id);
+        $summary = get_comment_text($shortscore_id);
         $shortscore = get_comment($shortscore_id);
         $shortscore_author = get_comment_author($shortscore_id);
 
@@ -55,7 +55,7 @@ function get_shortscore_endpoint_data()
                 "id" => $shortscore_id,
                 "author" => $shortscore_author,
                 "userscore" => $user_shortscore,
-                "content" => $content,
+                "summary" => $summary,
                 "url" => $user_shortscore_url
             ),
             "game" => array(
