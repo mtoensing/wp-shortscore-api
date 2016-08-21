@@ -18,12 +18,12 @@ will output
        author: "stefan",
        userscore: "10",
        summary: "To keep it short: One of the best games, I&#039;ve ever played.",
-       url: "http://shortscore.local/game/dark-souls/#comment-374"
+       url: "http://shortscore.org/game/dark-souls/#comment-374"
    },
    game: {
        id: "745",
        title: "Dark Souls",
-       url: "http://shortscore.local/game/dark-souls/",
+       url: "http://shortscore.org/game/dark-souls/",
        shortscore: "9.5",
        count: "4"
    }
