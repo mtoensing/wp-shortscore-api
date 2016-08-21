@@ -10,9 +10,9 @@ The Shortscore ID is the wordpress comment id.
 
 https://shortscore.org/?get_shortscore=374 
 
-will output this:
+will output
 
-```{
+{
    shortscore: {
        id: "374",
        author: "stefan",
@@ -27,4 +27,12 @@ will output this:
        shortscore: "9.5",
        count: "4"
    }
-}```
+}
+
+## what can I do with it?
+
+Don't worry. We got you covered with a full featured wordpress plugin for easy integration:
+https://github.com/MarcDK/wp-shortscore 
+
+
+
