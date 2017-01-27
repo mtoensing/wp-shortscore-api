@@ -1,12 +1,13 @@
 <?php
 /**
- * Plugin Name: WP SHORTSCORE API
- * Plugin URI: http://shortscore.org
- * Description: Retreive SHORTSCORE data by providing a shortscore ID: `?get_shortscore=1`
- * Author: MarcDK
- * Author URI: http://marc.tv
- * Version: 1.0
- * License: GPLv2
+ * Plugin Name:         SHORTSCORE API
+ * Plugin URI:          http://shortscore.org
+ * GitHub Plugin URI:   mtoensing/wp-shortscore-api
+ * Description:         JSON Endpoint for SHORTSCORE data by shortscore ID: `?get_shortscore=1`
+ * Author:              Marc Tönsing
+ * Author URI:          http://marc.tv
+ * Version:             1.0
+ * License:             GPLv2
  */
 
 /**
