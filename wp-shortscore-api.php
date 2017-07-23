@@ -6,7 +6,7 @@
  * Description:         JSON Endpoint for SHORTSCORE data by shortscore ID: `?get_shortscore=1`
  * Author:              Marc Tönsing
  * Author URI:          http://marc.tv
- * Version:             1.2
+ * Version:             1.3
  * License:             GPLv2
  */
 
@@ -84,9 +84,10 @@ function shortscore_register_api_hooks() {
 }
 
 function shortscore_get_recent_rated_games() {
+	if ( 0 || false === ( $result = get_transient( 'shortscore_recent_rated_games' ) ) ) {
 
 		$args = array(
-			'post_type' => 'game',
+			'post_type'  => 'game',
 			'tax_query',
 			array(
 				'relation' => 'OR',
@@ -127,7 +128,9 @@ function shortscore_get_recent_rated_games() {
 				'score_value'  => intval( get_post_meta( $game->ID, 'score_value', true ) ),
 			);
 		}
-
+		// cache for 10 minutes
+		set_transient( 'shortscore_recent_rated_games', $result, 60 * 10 );
+	}
 
 
 	$response = new WP_REST_Response( $result );
