@@ -6,7 +6,7 @@
  * Description:         JSON Endpoint for SHORTSCORE data by shortscore ID: `?get_shortscore=1`
  * Author:              Marc Tönsing
  * Author URI:          http://marc.tv
- * Version:             1.3
+ * Version:             1.4
  * License:             GPLv2
  */
 
@@ -84,7 +84,10 @@ function shortscore_register_api_hooks() {
 }
 
 function shortscore_get_recent_rated_games() {
-	if ( 0 || false === ( $result = get_transient( 'shortscore_recent_rated_games' ) ) ) {
+
+		$page = $_GET['page'];
+		$per_page = $_GET['per_page'];
+		$offset = $_GET['offset'];
 
 		$args = array(
 			'post_type'  => 'game',
@@ -111,11 +114,17 @@ function shortscore_get_recent_rated_games() {
 					'compare' => '>',
 				),
 			),
+			'posts_per_page' => $per_page,
+			'paged' => $page,
+			'offset' => $offset
 		);
 
 		$query = new WP_Query( $args );
 
+
 		$rated_games = $query->posts;
+		$max_num_pages = $query->max_num_pages;
+		$max_posts = $query->found_posts;
 
 		foreach ( $rated_games as $game ) {
 			$result[] = array(
@@ -127,14 +136,13 @@ function shortscore_get_recent_rated_games() {
 				'score_count'  => intval( get_post_meta( $game->ID, 'score_count', true ) ),
 				'score_value'  => intval( get_post_meta( $game->ID, 'score_value', true ) ),
 			);
-		}
-		// cache for 10 minutes
-		set_transient( 'shortscore_recent_rated_games', $result, 60 * 10 );
 	}
 
 
 	$response = new WP_REST_Response( $result );
-	$response->header( 'Access-Control-Allow-Origin', apply_filters( 'giar_access_control_allow_origin', '*' ) );
+	$response->header( 'Access-Control-Allow-Origin', apply_filters( 'shortscore_access_control_allow_origin', '*' ) );
+	$response->header( 'X-WP-Total', apply_filters( 'shortscore_max_num_pages', $max_posts ) );
+	$response->header( 'X-WP-TotalPages', apply_filters( 'shortscore_max_num_pages', $max_num_pages ) );
 
 	return $response;
 }
